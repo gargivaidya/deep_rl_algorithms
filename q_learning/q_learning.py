@@ -12,6 +12,10 @@ SHOW_EVERY = 10
 DISCRETE_OBS_SIZE = [20] * len(env.observation_space.high) 
 discrete_os_win_size = (env.observation_space.high - env.observation_space.low)/DISCRETE_OBS_SIZE
 
+epsilon = 0.5
+epsilon_max = 1.0
+epsilon_min = 
+
 q_table = np.random.uniform(low = -2, high = 0, size = (DISCRETE_OBS_SIZE + [env.action_space.n]))
 
 def get_discrete_state(state):
@@ -29,8 +33,8 @@ for episode in range(EPISODES) :
 		action = np.argmax(q_table[discrete_state]) #out of 3 actions
 		state_, reward, done, info = env.step(action)
 		new_discrete_state = get_discrete_state(state_)
-		if render:
-			env.render()
+		# if render:
+		env.render()
 		if not done:
 			max_future_q = np.max(q_table[new_discrete_state])
 			current_q = q_table[discrete_state + (action, )]
@@ -40,3 +44,5 @@ for episode in range(EPISODES) :
 			q_table[discrete_state + (action, )] = 0
 
 		discrete_state = new_discrete_state
+
+	print("Episode complete after", episode)
